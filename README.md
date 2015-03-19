@@ -1,15 +1,16 @@
 # API Manager Access Token as a URL Param
 
-Add this as the top most handler in the API.
+This handler allows you to specify the OAuth 2 access token of an API invocation as a URL parameter.
 
-`<handler class="org.wso2.carbon.apimgt.extensions.auth.URLTokenInjector"/>`
+1. Copy libs/org.wso2.carbon.apimgt.extensions-1.0.0-SNAPSHOT.jar into <API_MANAGER>/repository/components/lib directory
+2. Restart the server
+3. Add following handler as the top most handler in the API or API template
+	`<handler class="org.wso2.carbon.apimgt.extensions.auth.URLTokenInjector"/>`
 
-Token can be specified as `/facebook/1.0.0?access_token=123456`
+## Sending the Token
+
+Token can be specified as `/facebook/1.0.0?access_token=123456`.
 
 If you don't like the param name, it can be changed by specifying "urlTokenParam" system property.
 
-i.e. If following is used,
-
-`sh bin/wso2server.sh -DurlTokenParam=token`
-
-then API can be invoked as `/facebook/1.0.0?token=123456`
+i.e. If `sh bin/wso2server.sh -DurlTokenParam=token` is used, then API can be invoked as `/facebook/1.0.0?token=123456`
