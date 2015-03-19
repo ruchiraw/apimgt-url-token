@@ -48,15 +48,22 @@ public class URLTokenInjector extends AbstractHandler {
     public boolean handleRequest(MessageContext synCtx) {
         String path = RESTUtils.getFullRequestPath(synCtx);
         String token = getUrlToken(path);
-        if (token != null) {
-            if (log.isDebugEnabled()) {
-                log.debug("Setting Authorization header retrieved from the URL");
-                log.debug("Path : " + path);
-                log.debug("Token : " + token);
-            }
-            Map headers = getHeaders(synCtx);
-            headers.put(OAUTH_HEADER, getAuthHeader(token));
+        if (token == null) {
+            return true;
         }
+        if (log.isDebugEnabled()) {
+            log.debug("Setting Authorization header retrieved from the URL");
+            log.debug("Path : " + path);
+            log.debug("Token : " + token);
+        }
+        Map headers = getHeaders(synCtx);
+        if (headers.get(OAUTH_HEADER) != null) {
+            if (log.isDebugEnabled()) {
+                log.debug("Authorization header already exists, skipping URL access token");
+            }
+            return true;
+        }
+        headers.put(OAUTH_HEADER, getAuthHeader(token));
         return true;
     }
 
